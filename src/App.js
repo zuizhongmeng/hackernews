@@ -94,7 +94,6 @@ class App extends Component {
 
   // 单向数据流
   onDismiss(id) {
-
     // function isNotId(item) {
     //   return item.objectID !== id;
     // }
@@ -111,7 +110,13 @@ class App extends Component {
 
     // 使用类方法setState()来更新组件satate中的列表
     this.setState({ list: updateList });
+  }
 
+  // 单向数据流2
+  onDismiss2(id) {
+    const isNotId = item => item.objectID !== id;
+    const updateList = this.state.list2.filter(isNotId);
+    this.setState({ list2: updateList });
   }
 
   onSearchChange(event) {
@@ -341,7 +346,7 @@ class App extends Component {
               <span>{item.points}</span>
               <span>
                 <button
-                  onClick={() => this.onDismiss(item.objectID)}
+                  onClick={() => this.onDismiss2(item.objectID)}
                   type="button"
                 >
                   Dismiss
