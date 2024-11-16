@@ -18,6 +18,7 @@ class Developer extends Component {
     return (
       <div className="Developer">
         <h2>{name.getName()}</h2>
+        <div>----------------------------------------</div>
       </div>
     );
   }  

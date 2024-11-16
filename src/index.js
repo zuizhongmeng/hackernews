@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import App2 from './App2';
+import App3 from './App3';
 import ExplainBindingsComponent from './ExplainBindingsComponent';
 import Developer from './Developer';
 import reportWebVitals from './reportWebVitals';
@@ -12,13 +13,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
-);
-
-const root2 = ReactDOM.createRoot(document.getElementById('root2'));
-root2.render(
-  <React.StrictMode>
-    <App2 />
   </React.StrictMode>
 );
 
@@ -39,6 +33,20 @@ const root5 = ReactDOM.createRoot(document.getElementById('root5'));
 root5.render(
   <React.StrictMode>
     <Developer />
+  </React.StrictMode>
+);
+
+const root2 = ReactDOM.createRoot(document.getElementById('root2'));
+root2.render(
+  <React.StrictMode>
+    <App2 />
+  </React.StrictMode>
+);
+
+const root6 = ReactDOM.createRoot(document.getElementById('root6'));
+root6.render(
+  <React.StrictMode>
+    <App3 />
   </React.StrictMode>
 );
 
