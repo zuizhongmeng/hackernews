@@ -147,7 +147,6 @@ const Search = ({ value, onChange, children }) =>
 //       <div>
 //         {list.filter(isSearched(pattern)).map(item =>
 //           <div key={item.objectID}>
-//             <span>08</span>
 //             <span>
 //               <a href={item.url}>{item.title}</a>
 //             </span>
@@ -177,10 +176,7 @@ const Search = ({ value, onChange, children }) =>
 //   <div className="table">
 //     {list.filter(isSearched(pattern)).map(item =>
 //       <div key={item.objectID} className="table-row">
-//         <span style={{ width: '10%'}}>
-//           08
-//         </span>
-//         <span style={{ width: '30%'}}>
+//         <span style={{ width: '40%'}}>
 //           <a href={item.url}>{item.title}</a>
 //         </span>
 //         <span style={{ width: '30%'}}>
@@ -193,12 +189,6 @@ const Search = ({ value, onChange, children }) =>
 //           {item.points}
 //         </span>
 //         <span style={{ width: '10%'}}>
-//           {/* <button
-//             onClick={() => onDismiss(item.objectID)}
-//             type="button"
-//           >
-//             Dismiss
-//           </button> */}
 //           <Button
 //             onClick={() => onDismiss(item.objectID)}
 //             className="button-inline"
@@ -239,12 +229,6 @@ const Table = ({ list, pattern, onDismiss }) =>
           {item.points}
         </span>
         <span style={smallColumn}>
-          {/* <button
-            onClick={() => onDismiss(item.objectID)}
-            type="button"
-          >
-            Dismiss
-          </button> */}
           <Button
             onClick={() => onDismiss(item.objectID)}
             className="button-inline"
