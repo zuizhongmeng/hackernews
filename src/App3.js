@@ -67,7 +67,11 @@ class App3 extends Component {
   super(props);
 
   this.state = {
-    result: null,
+    // result: null,
+
+    // 在初始化组件状态中重命名result对象为results。定义一个临时的searchKey用来储存单个result。
+    results: null,
+    searchKey: '',
     searchTerm: DEFAULT_QUERY,
   };
 
@@ -81,6 +85,8 @@ class App3 extends Component {
 setSearchTopStories(result) {
   const { hits, page } = result;
 
+  const {searchKey, results } = this.state;
+
   const oldHits = page !== 0
     ? this.state.result.hits
     : [];
@@ -91,7 +97,13 @@ setSearchTopStories(result) {
   ];
 
   this.setState({
-    result: { hits: updatedHits, page }
+    // result: { hits: updatedHits, page }
+
+    // 通过searchKey来存储每个结果
+    results: {
+      ...results,
+      [searchKey]: { hits: updatedHits, page }
+    }
   });
 }
 
@@ -104,13 +116,24 @@ fetchSearchTopStories(searchTerm, page = 0) {
 
 componentDidMount() {
   const { searchTerm } = this.state;
+
+  // searchKey的值必须在发起请求之前设置。它的值来自searchTerm。
+  // 你可能会想：为什么我们不直接使用searchTerm呢？这是在我们继续之前需要理解的重点。
+  // searchTerm是一个动态的变量，因此它随输入的关键字变化而变化。
+  // 然而，这里你需要的是一个稳定的变量。它保存最近一次提交给API的搜索词，也可以用它来检索结果集中的某个结果。
+  // 由于它指向缓存中的当前返回结果，因此还可以在render()方法中用来显示当前结果。
+  this.setState({ searchKey: searchTerm });
   this.fetchSearchTopStories(searchTerm);
 }
 
 onDismiss(id) {
+  const { searchKey, results } = this.state;
+  const { hits, page } = results[searchKey];
 
   const isNotId = item => item.objectID !== id;
-  const updatedHits = this.state.result.hits.filter(isNotId);
+  // const updatedHits = this.state.result.hits.filter(isNotId);
+
+  const updatedHits = hits.filter(isNotId);
 
   // this.setState({
   //   result: Object.assign({}, this.state.result, { hits: updatedHits })
@@ -118,7 +141,12 @@ onDismiss(id) {
 
   // 扩展操作符
   this.setState({
-    result: { ... this.state.result, hits: updatedHits }
+    // result: { ... this.state.result, hits: updatedHits }
+
+    results: {
+      ...results,
+      [searchKey]: { hits: updatedHits, page }
+    }
   });
 
 }
@@ -129,14 +157,36 @@ onSearchChange(event) {
 
 onSearchSubmit(event) {
   const { searchTerm } = this.state;
+
+  this.setState({ searchKey: searchTerm });
   this.fetchSearchTopStories(searchTerm);
   event.preventDefault();
 }
 
   render() {
 
-    const { searchTerm, result } = this.state;
-    const page = (result && result.page) || 0;
+    const {
+      searchTerm,
+      // result
+
+      results,
+      searchKey
+    } = this.state;
+
+    const page = (
+      // result &&
+      // result.page
+
+      results &&
+      results[searchKey] &&
+      results[searchKey].page
+    ) || 0;
+
+    const list = (
+      results &&
+      results[searchKey] &&
+      results[searchKey].hits
+    ) || [];
 
     // if (!result) { return null; }
 
@@ -163,12 +213,16 @@ onSearchSubmit(event) {
         {/* 条件渲染 */}
         { result &&
           <Table
-            list={result.hits}
+            // list={result.hits}
+
+            list={list}
             onDismiss={this.onDismiss}
           />
         }
         <div className="interactions">
-          <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
+          {/* <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}> */}
+          
+          <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
             More
           </Button>
         </div>
