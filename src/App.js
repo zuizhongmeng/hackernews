@@ -300,8 +300,8 @@ class App extends Component {
           />
         </form>
         
-        {/* 使用定义的isSearched()函数来过滤你的列表，
-        你从本地状态中传递searchTerm属性返回一个根据条件过滤列表的输入过滤函数。
+        {/* 使用定义的isSearched2()函数来过滤你的列表，
+        你从本地状态中传递searchTerm2属性返回一个根据条件过滤列表的输入过滤函数。
         之后它会映射过滤后的列表用于显示每个列表项的元素。 */}
         {list.filter(isSearched2(searchTerm2)).map(item => 
             <div key={item.objectID}>
