@@ -75,6 +75,7 @@ class App3 extends Component {
     searchTerm: DEFAULT_QUERY,
   };
 
+  this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
   this.setSearchTopStories = this.setSearchTopStories.bind(this);
   this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
   this.onSearchChange = this.onSearchChange.bind(this);
@@ -82,13 +83,21 @@ class App3 extends Component {
   this.onDismiss = this.onDismiss.bind(this);
 }
 
+needsToSearchTopStories(searchTerm) {
+  return !this.state.results[searchTerm];
+}
+
 setSearchTopStories(result) {
   const { hits, page } = result;
 
-  const {searchKey, results } = this.state;
+  const { searchKey, results } = this.state;
 
-  const oldHits = page !== 0
-    ? this.state.result.hits
+  // const oldHits = page !== 0
+  //   ? this.state.results.hits
+  //   : [];
+
+  const oldHits = results && results[searchKey]
+    ? results[searchKey].hits
     : [];
   
   const updatedHits = [
@@ -108,7 +117,13 @@ setSearchTopStories(result) {
 }
 
 fetchSearchTopStories(searchTerm, page = 0) {
-  fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
+
+  fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
     .then(response => response.json())
     .then(result => this.setSearchTopStories(result))
     .catch(e => e);
@@ -159,7 +174,12 @@ onSearchSubmit(event) {
   const { searchTerm } = this.state;
 
   this.setState({ searchKey: searchTerm });
-  this.fetchSearchTopStories(searchTerm);
+  // this.fetchSearchTopStories(searchTerm);
+
+  if (this.needsToSearchTopStories(searchTerm)) {
+    this.fetchSearchTopStories(searchTerm);
+  }
+  
   event.preventDefault();
 }
 
