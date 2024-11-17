@@ -8,6 +8,9 @@ const DEFAULT_QUERY = 'redux';
 const DEFAULT_HPP = '100';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
+
+// 错误处理（不存在的URL）
+// const PATH_BASE = 'https://hn.foo.var.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
@@ -73,6 +76,7 @@ class App3 extends Component {
     results: null,
     searchKey: '',
     searchTerm: DEFAULT_QUERY,
+    error: null,
   };
 
   this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
@@ -126,7 +130,7 @@ fetchSearchTopStories(searchTerm, page = 0) {
   })
     .then(response => response.json())
     .then(result => this.setSearchTopStories(result))
-    .catch(e => e);
+    .catch(e => this.setState({ error: e }));
 }
 
 componentDidMount() {
@@ -190,7 +194,8 @@ onSearchSubmit(event) {
       // result
 
       results,
-      searchKey
+      searchKey,
+      error
     } = this.state;
 
     const page = (
@@ -209,6 +214,10 @@ onSearchSubmit(event) {
     ) || [];
 
     // if (!result) { return null; }
+
+    // if (error) {
+    //   return <p>Something went wrong.</p>
+    // }
 
     return (
       <div className="page">
@@ -232,7 +241,12 @@ onSearchSubmit(event) {
 
         {/* 条件渲染 */}
         { result &&
-          <Table
+
+        error
+        ?  <div className='interactions'>
+             <p>Something went wrong.</p>
+           </div>
+        :  <Table
             // list={result.hits}
 
             list={list}
