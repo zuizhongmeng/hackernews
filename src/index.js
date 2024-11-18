@@ -45,9 +45,12 @@ root2.render(
 
 const root6 = ReactDOM.createRoot(document.getElementById('root6'));
 root6.render(
-  <React.StrictMode>
+
+  // React传统上提供了一个名为StrictMode的组件，它被认为可以有效地显露未“正确”实现的组件。
+  // 例如，通过有意调用函数组件的函数2次，也许能够检测到具有副作用的组件。
+  // <React.StrictMode>
     <App3 />
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // 模块热替换（HMR）
